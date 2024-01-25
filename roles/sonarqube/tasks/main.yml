@@ -1,0 +1,56 @@
+---
+- name: Create group
+  group:
+    name: sonar
+    gid: 1500
+- name: Create user
+  user:
+    name: "{{ application_name }}"
+    uid: "{{ user_id }}"
+    group: "{{ application_name }}"
+    shell: /bin/bash
+    create_home: no
+- name: Main directories
+  file:
+    path: "{{ item }}"
+    owner: "{{ application_name }}"
+    group: "{{ application_name }}"
+    state: directory
+    mode: 0755
+  loop:
+      - "/opt/{{ application_name }}-{{ application_version }}"
+- name: Get the application
+  unarchive: 
+    src: "{{ application_name }}qube-{{ application_version }}.zip"
+    dest: "/opt/{{ application_name }}-{{ application_version }}"
+    owner: "{{ application_name }}"
+    group: "{{ application_name }}"
+    creates: "/opt/{{ application_name }}-{{ application_version }}/logs"
+- name: link current to base name i.e. /opt/sonar
+  file: 
+    src: "/opt/{{ application_name }}-{{ application_version }}"
+    dest: "/opt/{{ application_name }}"
+    state: link
+- name: install {{ application_name }} template
+  template:
+    src: service.j2
+    dest: "/etc/systemd/system/{{ application_name }}.service"
+    owner: root
+    mode: 0544
+- name: start and enable {{ application_name }} service
+  systemd: 
+    name: "{{ application_name }}"
+    state: started
+    daemon_reload: yes
+    enabled: yes
+- name: Sonar config
+  template:
+    src: sonar.properties.j2
+    dest: /opt/{{ application_name }}-{{ application_version }}/conf/sonar.properties
+    owner: "{{ application_name }}"
+    mode: 0544
+- name: Setup System Custom Values
+  sysctl:
+    name: vm.max_map_count
+    value: '524288'
+    state: present

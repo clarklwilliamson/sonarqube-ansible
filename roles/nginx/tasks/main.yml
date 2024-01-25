@@ -1,0 +1,27 @@
+---
+- name: Create group
+  group:
+    name: jenkins
+    gid: 1600
+- name: Create user
+  user:
+    name: "{{ application_name }}"
+    uid: "{{ user_id }}"
+    group: "{{ application_name }}"
+    shell: /bin/bash
+- name: Packages
+  dnf:
+    name: nginx 
+    state: present
+- name: nginx site configuration
+  template:
+    src: "{{ application_url }}.j2"
+    dest: "/etc/nginx/conf.d/{{ application_url }}.conf"
+    owner: nginx
+    group: nginx
+    mode: 0755
+- name: enable service
+  service:
+    name: nginx
+    state: started
+    enabled: true

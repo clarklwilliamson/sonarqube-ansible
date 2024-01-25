@@ -1,0 +1,30 @@
+---
+- hosts: all
+  gather_facts: False
+  tasks: 
+  - name: remove pgdg.repo
+    file:
+      path: /etc/yum.repos.d/pgdg.repo
+      state: absent
+  - name: remove pgdg.repo
+    file:
+      path: /etc/yum.repos.d/repomgr.repo
+      state: absent
+  - name: remove pgdg.repo
+    file:
+      path: /etc/yum.repos.d/repomgr.repo.repo
+      state: absent
+  - name: package remove xinetd from application servers
+    dnf:
+      name: 
+      - haproxy
+      - xinetd
+      state: absent
+  - name: copy files to /etc/pki/ca-trust/source/anchors
+    file:
+      path: "/etc/pki/ca-trust/source/anchors/{{ item }}"
+      state: absent
+    loop:
+      - KP.Approved.CA.Trust.Bundle.pem
+      - Sectigo.kp.intermediate.pem
+      - Sectigo.kp.root.pem

@@ -1,0 +1,5 @@
+application_name: jenkins
+user_id: 1600
+application_url: "{{application_name}}.lasvegaslogan.net"
+application_version: 10.3.0
+applicationMemory: 512

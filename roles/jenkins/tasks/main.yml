@@ -1,0 +1,29 @@
+---
+- name: setup repos
+  yum_repository:
+    name: jenkins
+    file: jenkins
+    description: jenkins
+    baseurl: "http://pkg.jenkins.io/redhat-stable"
+    gpgcheck: true
+    enabled: true
+    gpgkey:
+      - "https://pkg.jenkins.io/redhat-stable/jenkins.io-2023.key"
+- name:
+  package:
+    name: 
+    - jenkins
+    - maven
+    state: latest
+
+- name: start and enable {{ application_name }} service
+  systemd: 
+    name: "{{ application_name }}"
+    state: started
+    daemon_reload: yes
+    enabled: yes
+- name: Setup System Custom Values
+  sysctl:
+    name: vm.max_map_count
+    value: '524288'
+    state: present

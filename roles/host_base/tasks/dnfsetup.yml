@@ -1,0 +1,7 @@
+---
+- name: disable excludes and set install limit to 2
+  copy: 
+    src: dnf.conf 
+    dest: /etc/dnf/dnf.conf
+    owner: root
+    mode: o=rw

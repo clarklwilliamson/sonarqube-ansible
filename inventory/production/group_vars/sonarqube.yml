@@ -1,0 +1,5 @@
+application_name: sonar
+user_id: 1700
+application_url: "{{application_name}}qube.lasvegaslogan.net"
+application_version: 10.3.0
+applicationMemory: 512

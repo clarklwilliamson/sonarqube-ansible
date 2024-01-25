@@ -1,0 +1,33 @@
+#- include_tasks: dnfsetup.yml
+#- include_tasks: update.yml
+#  tags: 
+#  - dnfupdate
+#  - never
+- name: setup repos
+  yum_repository:
+    name: fish
+    file: fish
+    description: fish
+    baseurl: "https://download.opensuse.org/repositories/shells:/fish:/release:/3/CentOS_7/"
+    gpgcheck: true
+    enabled: true
+    gpgkey: "https://download.opensuse.org/repositories/shells:/fish:/release:/3/CentOS_7/repodata/repomd.xml.key"
+
+#- name: install epel-release
+#  yum:
+#    name: "https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm"
+#    state: present
+
+- name: package install
+  yum:
+    name: 
+      - htop
+      - git
+      - mlocate
+      - fish
+      - vim
+      - fontconfig
+      - unzip
+    update_cache: yes
+    state: present
+    disable_gpg_check: yes

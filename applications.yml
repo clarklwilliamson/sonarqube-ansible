@@ -1,0 +1,14 @@
+---
+- hosts: all
+  roles:
+  - host_base
+- hosts: sonarqube
+  roles:
+  - java
+  - nginx
+  - sonarqube
+- hosts: jenkins
+  roles:
+  - java
+  - nginx
+  - jenkins

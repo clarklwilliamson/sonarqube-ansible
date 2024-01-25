@@ -1,0 +1,9 @@
+---
+- name: Java packages
+  package:
+    name: " {{ item }} "
+    update_cache: true
+    state: present
+  with_items:
+    - java-17-amazon-corretto
+    - java-17-amazon-corretto-devel

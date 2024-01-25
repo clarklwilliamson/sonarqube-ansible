@@ -1,0 +1,5 @@
+---
+- name: set root to expire 5 years
+  user:
+    name: root
+    password_expire_min: 1825
